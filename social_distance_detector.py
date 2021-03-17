@@ -38,7 +38,8 @@ import cv2
 import os
 
 # construct the argument parse and parse the arguments
-def main(filename):
+def main(filename=""):
+
 	ap = argparse.ArgumentParser()
 	ap.add_argument("-i", "--input", type=str, default="",
 					help="path to (optional) input video file")
@@ -167,5 +168,5 @@ def main(filename):
 
 
 if __name__ == "__main__":
-	#main()
+	main()
 	pass

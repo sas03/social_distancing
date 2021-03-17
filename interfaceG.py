@@ -44,8 +44,11 @@ label_file_explorer = Label(window,
                             fg="blue")
 
 button_explore = Button(window,
-                        text="Choisir une Vidéo ou une image",
+                        text="Selectionner une Vidéo ou une image",
                         command=browseFiles)
+button_webcam= Button(window,
+                        text="Lancer via WebCam",
+                        command=main)
 
 button_exit = Button(window,
                      text="Exit",
@@ -57,10 +60,11 @@ button_exit = Button(window,
 # specifying rows and columns
 label_file_explorer.grid(column=1, row=1)
 
-button_explore.grid(column=1, row=2)
+button_webcam.grid(column=1, row=2)
+button_explore.grid(column=1, row=3)
 
 
-button_exit.grid(column=1, row=3)
+button_exit.grid(column=1, row=4)
 
 # Let the window wait for any events
 window.mainloop()
