@@ -32,7 +32,6 @@ import social_distancing_config as config
 from detection import detect_people
 from scipy.spatial import distance as dist
 import numpy as np
-import argparse
 import imutils
 import cv2
 import os
@@ -40,16 +39,6 @@ import os
 # construct the argument parse and parse the arguments
 def main(filename=""):
 
-	ap = argparse.ArgumentParser()
-	ap.add_argument("-i", "--input", type=str, default="",
-					help="path to (optional) input video file")
-	ap.add_argument("-o", "--output", type=str, default="",
-					help="path to (optional) output video file")
-	ap.add_argument("-d", "--display", type=int, default=1,
-					help="whether or not output frame should be displayed")
-	args = vars(ap.parse_args(
-		["--input", filename.replace("\\", "/"), "--output", "my_output.avi", "--display",
-		 "1"]))
 
 	# load the COCO class labels our YOLO model was trained on
 	labelsPath = os.path.sep.join([os.getcwd().replace("\\", "/") + "/yolo-coco/coco.names"])
@@ -76,7 +65,7 @@ def main(filename=""):
 
 	# initialize the video stream and pointer to output video file
 	print("[INFO] accessing video stream...")
-	vs = cv2.VideoCapture(args["input"] if args["input"] else 0)
+	vs = cv2.VideoCapture(filename.replace("\\", "/") if filename != "" else 0)
 	writer = None
 
 	# loop over the frames from the video stream
@@ -144,28 +133,13 @@ def main(filename=""):
 
 		# check to see if the output frame should be displayed to our
 		# screen
-		if args["display"] > 0:
-			# show the output frame
-			cv2.imshow("Frame", frame)
-			key = cv2.waitKey(1) & 0xFF
+		# show the output frame
+		cv2.imshow("Frame", frame)
+		key = cv2.waitKey(1) & 0xFF
 
-			# if the `q` key was pressed, break from the loop
-			if key == ord("q"):
-				break
-
-		# if an output video file path has been supplied and the video
-		# writer has not been initialized, do so now
-		if args["output"] != "" and writer is None:
-			# initialize our video writer
-			fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-			writer = cv2.VideoWriter(args["output"], fourcc, 25,
-									 (frame.shape[1], frame.shape[0]), True)
-
-		# if the video writer is not None, write the frame to the output
-		# video file
-		if writer is not None:
-			writer.write(frame)
-
+		# if the `q` key was pressed, break from the loop
+		if key == ord("q"):
+			break
 
 if __name__ == "__main__":
 	main()
